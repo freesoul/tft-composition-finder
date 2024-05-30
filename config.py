@@ -1,5 +1,4 @@
-MIN_TEAM_SIZE = 7
-MAX_TEAM_SIZE = 8
+
 MIN_MAX_UNIT_BY_COST = {
     1: [0, 1],
     2: [0, 2],

@@ -2,12 +2,10 @@ import time
 import random
 from copy import deepcopy
 import dataclasses
-from typing import Set, Dict, List
+from typing import Set, Dict, List, Optional
 from champions import TFT_CHAMPIONS, Champion
 from traits import TRAIT_BREAKPOINTS_DICT, Trait
 from config import (
-    MIN_TEAM_SIZE,
-    MAX_TEAM_SIZE,
     MIN_DIFFERENT_TRAITS_PER_LEVEL,
     INCLUDE_CHAMPS,
     EXCLUDE_CHAMPS,
@@ -25,8 +23,20 @@ random.seed(time.time())
 
 
 @dataclasses.dataclass
+class Emblems:
+    name: str
+    num: int
+
+    @classmethod
+    def from_str(cls, emblem_str: str) -> "Emblems":
+        name, num = emblem_str.split("_")
+        return cls(name=name.lower(), num=int(num))
+
+
+@dataclasses.dataclass
 class Composition:
     champions: Set[Champion]
+    emblems: Dict[int, str]
 
     @property
     def traits(self) -> Dict[Trait, int]:
@@ -43,11 +53,12 @@ class Composition:
     def traits_with_breakpoints(self) -> Dict[str, int]:
         res: Dict[str, int] = {}
         for trait, count in self.traits.items():
+            if trait.lower() in self.emblems:
+                count += self.emblems[trait.lower()]
             for step in reversed(list(TRAIT_BREAKPOINTS_DICT[trait].steps)):
                 if count >= step:
                     res[trait] = step
                     break
-
         return res
 
     @property
@@ -85,16 +96,8 @@ class Composition:
         """
         msg = f"Composition: {self.key} - Score {self.score} - Cost {self.total_cost} - "
         traits = []
-        for trait, count in self.traits.items():
-            for step in reversed(list(TRAIT_BREAKPOINTS_DICT[trait].steps)):
-                if count >= step:
-                    traits.append(
-                        (
-                            trait,
-                            step,
-                        )
-                    )
-                    break
+        for trait, count in self.traits_with_breakpoints.items():
+            traits.append((trait, count))
         traits = sorted(traits, key=lambda x: x[1], reverse=True)
         msg += ",".join([f"{trait} {step}" for trait, step in traits])
         print(msg)
@@ -110,7 +113,10 @@ class Composition:
 
 class Composer:
 
-    def __init__(self) -> None:
+    def __init__(self, target_team_size: int = 8, emblems: List[Emblems] = []) -> None:
+        self._target_team_size = target_team_size
+        self._emblems = emblems
+        self._emblems_dict: Dict[str, int] = {emblem.name: emblem.num for emblem in emblems}
         self._found_compositions: List[Composition] = []
         self._found_composition_keys: Set[str] = set()
         self._search_champs = TFT_CHAMPIONS
@@ -120,14 +126,15 @@ class Composer:
             if isinstance(champ, str):
                 self._search_champs = [c for c in self._search_champs if c.name != champ]
 
-    def compose(self, composition: Composition = Composition(set()), depth: int = 0) -> None:
+    def compose(self, composition: Optional[Composition] = None, depth: int = 0) -> None:
 
-        # TODO: fill needed champs first
+        if composition is None:
+            composition = Composition(champions=set(), emblems=self._emblems_dict)
 
         num_champs = len(composition.champions)
         new_num_champs = num_champs + 1
 
-        if new_num_champs > MAX_TEAM_SIZE:
+        if new_num_champs > self._target_team_size:
             return
 
         if not self._has_required_champs(composition):
@@ -149,7 +156,7 @@ class Composer:
             if champion in composition.champions:
                 continue
 
-            new_composition = Composition(deepcopy(composition.champions).union({champion}))
+            new_composition = Composition(deepcopy(composition.champions).union({champion}), emblems=self._emblems_dict)
 
             new_composition_num_traits = len(new_composition.traits)
 
@@ -165,7 +172,7 @@ class Composer:
             if key in self._found_composition_keys:
                 continue
 
-            if new_num_champs >= MIN_TEAM_SIZE:
+            if new_num_champs >= 2:
                 has_required_traits = True
                 for req_trait in INCLUDE_TRAITS:
                     if not new_composition.includes_trait(req_trait):
@@ -228,15 +235,27 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--include-champs", type=str)
+    parser.add_argument("--team-size", type=int, default=8)
+    parser.add_argument("--emblems", type=str)
     args = parser.parse_args()
-    composer = Composer()
+
+    if args.emblems:
+        emblems = [Emblems.from_str(emblem_str) for emblem_str in args.emblems.split(",")]
+    else:
+        emblems = []
+
+    composer = Composer(target_team_size=args.team_size, emblems=emblems)
 
     if len(args.include_champs) > 0:
         champions = set()
         for champ_name in args.include_champs.split(","):
             champions.add(composer.find_champ(champ_name))
-        start_comp = Composition(champions=champions)
+        start_comp = Composition(champions=champions, emblems=composer._emblems_dict)
     else:
-        start_comp = Composition(champions=set([champ for champ in TFT_CHAMPIONS if champ.name in INCLUDE_CHAMPS]))
+        start_comp = Composition(champions=set([champ for champ in TFT_CHAMPIONS if champ.name in INCLUDE_CHAMPS]), emblems=composer._emblems_dict)
 
     result = composer.compose(start_comp)
+
+    print("\nDone. Best compositions:")
+    for comp in composer._found_compositions:
+        comp.pretty_print()
