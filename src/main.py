@@ -63,7 +63,11 @@ class Composition:
 
     @property
     def key(self) -> str:
-        return ",".join(sorted([champion.name for champion in self.champions]))
+        # TODO: why cost is not an int??
+        return ",".join(champion.name for champion in sorted(self.champions, key=lambda x: (int(x.cost), x.name)))  
+        
+
+
 
     @property
     def total_cost(self) -> int:
