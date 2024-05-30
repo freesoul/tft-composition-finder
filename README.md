@@ -1,3 +1,5 @@
+# TFT Fast (or not) Composition Finder
+
 This little project aims to provide a fast brute force, but with some configurable heuristics, search for completing a team, given any number of champions.  
   
 You can configure your preferences in config.py.  
@@ -5,7 +7,7 @@ You can configure your preferences in config.py.
 Random example usage:  
   
 ```
-python .\main.py --team-size 8 --include-champs "Sett,Kog'maw,Illaoi,Lee Sin"  --emblems mythic_1,duelist_1
+python .\src\main.py --team-size 8 --include-champs "Sett,Kog'maw,Illaoi,Lee Sin"  --emblems mythic_1,duelist_1
 ```  
   
 Output:  
