@@ -7,13 +7,16 @@ MIN_MAX_UNIT_BY_COST = {
     4: [2, 4],
     5: [1, 3],
 }
-MIN_DIFFERENT_TRAITS_LVL2 = 0
-MIN_DIFFERENT_TRAITS_LVL3 = 0
-MIN_DIFFERENT_TRAITS_LVL6 = 3
-MIN_DIFFERENT_TRAITS_LVL8 = 4
 
-INCLUDE_CHAMPS = ["Syndra", "Illaoi", "Ahri"]
-EXCLUDE_CHAMPS = ["Kobuko", "Jax", "Garen", "Sivir", "Kha'zix", "Malphite", "Cho'gath", "Yone", "Kayn", "Kai'sa"]
+MIN_DIFFERENT_TRAITS_PER_LEVEL = {
+    2: 1,
+    4: 2,
+    6: 3,
+    8: 4,
+}
+
+INCLUDE_CHAMPS = [("Ahri", "Caitlyn", "Kog'maw"), ("Diana", "Illaoi"), ("Syndra", "Ornn", "Lee Sin"), ("Hwei", "Sett")]
+EXCLUDE_CHAMPS = []
 
 INCLUDE_TRAITS = []
 
@@ -47,24 +50,47 @@ TRAIT_SCORE_WEIGHT = {
     "bruiser_6": 0.7,
     "fated_5": 0.7,
     "arcanist_6": 0.7,
-    "behemot_4": 0.7,
     "reaper_4": 0.7,
     "umbral_2": 0.7,
+    "arcanist_4": 0.5,
+    "behemoth_4": 0.5,
 }
 
-MAX_ATTEMPTS_PER_NUM_CHAMPS = {
-    9: 3,
-    8: 5,
-    7: 7,
-    6: 12,
-    5: 25,
-    4: 50,
-    3: 100,
+# This starts from the non-fixed num champs
+MAX_ATTEMPTS = [999, 25, 12, 10, 7, 5, 3, 2, 2, 1]
+
+MIN_SCORE = 7
+
+
+MIN_TRAIT_LEVEL = 4
+
+UNIT_SCORE = {
+    "Sett": 1,
+    "Ahri": 0.5,
+    "Caitlyn": 0.5,
+    "Kog'maw": 0.5,
+    "Rakan": 1,
+    "Udyr": 1,
+    "Wukong": 1,
+    "Hwei": 1,
+    "Xayah": 1,
+    "Lissandra": 1,
+    "Riven": -1,
+    "Rek'sai": -1,
+    "Kobuko": -0.5,
+    "Jax": -1,
+    "Garen": -1,
+    "Sivir": -1,
+    "Kha'zix": -1,
+    "Malphite": -1,
+    "Cho'gath": -1,
+    "Yone": -1,
+    "Kayn": -1.5,
+    "Kai'sa": -1,
+    "Teemo": -1,
+    "Lux": -1,
+    "Bard": -1.5,
+    "Tristana": -1,
+    "Soraka": 0.5,
+    "Syndra": 0.5,
 }
-
-MIN_SCORE = 17
-
-# MAX_ATTEMPTS_PER_NUM_CHAMPS = {
-# }
-
-# MIN_SCORE=18

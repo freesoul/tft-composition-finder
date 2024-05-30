@@ -8,19 +8,17 @@ from traits import TRAIT_BREAKPOINTS_DICT, Trait
 from config import (
     MIN_TEAM_SIZE,
     MAX_TEAM_SIZE,
-    # MAX_UNIT_COSTS,
-    MIN_DIFFERENT_TRAITS_LVL2,
-    MIN_DIFFERENT_TRAITS_LVL3,
-    MIN_DIFFERENT_TRAITS_LVL6,
-    MIN_DIFFERENT_TRAITS_LVL8,
+    MIN_DIFFERENT_TRAITS_PER_LEVEL,
     INCLUDE_CHAMPS,
     EXCLUDE_CHAMPS,
     INCLUDE_TRAITS,
     KEEP_N_BEST,
     TRAIT_SCORE_WEIGHT,
     MIN_MAX_UNIT_BY_COST,
-    MAX_ATTEMPTS_PER_NUM_CHAMPS,
-    MIN_SCORE
+    MAX_ATTEMPTS,
+    MIN_SCORE,
+    MIN_TRAIT_LEVEL,
+    UNIT_SCORE,
 )
 
 random.seed(time.time())
@@ -70,22 +68,44 @@ class Composition:
     def score(self) -> float:
         score = 0.0
         for trait, breakpoint_num in self.traits_with_breakpoints.items():
+            trait_key = f"{trait}_{breakpoint_num}"
             try:
-                score += TRAIT_SCORE_WEIGHT[trait] * breakpoint_num
+                score += TRAIT_SCORE_WEIGHT[trait_key] * breakpoint_num
             except KeyError:
                 score += breakpoint_num
+
+        for champ in self.champions:
+            if champ.name in UNIT_SCORE:
+                score += UNIT_SCORE[champ.name]
         return score
 
     def pretty_print(self):
         """
         Prints the composition, and each trait active with its highest breakpoint
         """
-        print(self.key, self.score)
+        msg = f"Composition: {self.key} - Score {self.score} - Cost {self.total_cost} - "
+        traits = []
         for trait, count in self.traits.items():
             for step in reversed(list(TRAIT_BREAKPOINTS_DICT[trait].steps)):
                 if count >= step:
-                    print(f"{trait} {step}")
+                    traits.append(
+                        (
+                            trait,
+                            step,
+                        )
+                    )
                     break
+        traits = sorted(traits, key=lambda x: x[1], reverse=True)
+        msg += ",".join([f"{trait} {step}" for trait, step in traits])
+        print(msg)
+
+    @property
+    def max_trait_level(self) -> int:
+        max_lvl = 0
+        for level in self.traits_with_breakpoints.values():
+            if level > max_lvl:
+                max_lvl = level
+        return max_lvl
 
 
 class Composer:
@@ -97,9 +117,12 @@ class Composer:
         for champ in EXCLUDE_CHAMPS:
             self._search_champs = [c for c in self._search_champs if c.name != champ]
         for champ in INCLUDE_CHAMPS:
-            self._search_champs = [c for c in self._search_champs if c.name != champ]
+            if isinstance(champ, str):
+                self._search_champs = [c for c in self._search_champs if c.name != champ]
 
     def compose(self, composition: Composition = Composition(set()), depth: int = 0) -> None:
+
+        # TODO: fill needed champs first
 
         num_champs = len(composition.champions)
         new_num_champs = num_champs + 1
@@ -107,11 +130,17 @@ class Composer:
         if new_num_champs > MAX_TEAM_SIZE:
             return
 
-        random.shuffle(self._search_champs)
+        if not self._has_required_champs(composition):
+            search_champs = self._pick_missing_champs(composition)
+        else:
+            search_champs = self._search_champs
 
-        max_iterations = MAX_ATTEMPTS_PER_NUM_CHAMPS[new_num_champs] if new_num_champs in MAX_ATTEMPTS_PER_NUM_CHAMPS else None
+        random.shuffle(search_champs)
 
-        for i, champion in enumerate(self._search_champs):
+        max_iterations_idx = max(num_champs - len(INCLUDE_CHAMPS), 0)
+        max_iterations = MAX_ATTEMPTS[max_iterations_idx]
+
+        for i, champion in enumerate(search_champs):
 
             if max_iterations and i > max_iterations:
                 break
@@ -123,17 +152,9 @@ class Composer:
 
             new_composition_num_traits = len(new_composition.traits)
 
-            if new_composition_num_traits < MIN_DIFFERENT_TRAITS_LVL2 and new_num_champs >= 2:
-                continue
-
-            if new_composition_num_traits < MIN_DIFFERENT_TRAITS_LVL3 and new_num_champs >= 3:
-                continue
-
-            if new_composition_num_traits < MIN_DIFFERENT_TRAITS_LVL6 and new_num_champs >= 6:
-                continue
-
-            if new_composition_num_traits < MIN_DIFFERENT_TRAITS_LVL8 and new_num_champs >= 8:
-                continue
+            for num_champs, min_num_traits in MIN_DIFFERENT_TRAITS_PER_LEVEL.items():
+                if new_num_champs >= num_champs and new_composition_num_traits < min_num_traits:
+                    continue
 
             # if new_composition.total_cost > MAX_UNIT_COSTS:
             #     continue
@@ -144,13 +165,6 @@ class Composer:
                 continue
 
             if new_num_champs >= MIN_TEAM_SIZE:
-
-                has_required_champs = True
-                for req_champ in INCLUDE_CHAMPS:
-                    if req_champ not in new_composition.key:
-                        has_required_champs = False
-                        break
-
                 has_required_traits = True
                 for req_trait in INCLUDE_TRAITS:
                     if not new_composition.includes_trait(req_trait):
@@ -163,8 +177,8 @@ class Composer:
                     if num_champs_n_cost < min_max[0] or num_champs_n_cost > min_max[1]:
                         has_n_costs_in_range = False
                         break
-                
-                if has_required_champs and has_required_traits and has_n_costs_in_range and new_composition.score >= MIN_SCORE:
+
+                if has_required_traits and has_n_costs_in_range and new_composition.score >= MIN_SCORE and new_composition.max_trait_level >= MIN_TRAIT_LEVEL:
 
                     if len(self._found_compositions) < KEEP_N_BEST:
                         self._found_compositions.append(new_composition)
@@ -178,8 +192,50 @@ class Composer:
             self._found_composition_keys.add(key)
             self.compose(new_composition, depth + 1)
 
+    def _has_required_champs(self, composition: Composition) -> bool:
+        for req_champ in INCLUDE_CHAMPS:
+            if isinstance(req_champ, str):
+                if req_champ not in composition.key:
+                    return False
+            elif isinstance(req_champ, tuple):
+                if not any(champ in composition.key for champ in req_champ):
+                    return False
+        return True
+
+    def _pick_missing_champs(self, composition: Composition) -> List[Champion]:
+        missing_champs = []
+        for req_champ in INCLUDE_CHAMPS:
+            if isinstance(req_champ, str):
+                if req_champ not in composition.key:
+                    missing_champs.append(self.find_champ(req_champ))
+            elif isinstance(req_champ, tuple):
+                for champ_name in req_champ:
+                    if champ_name not in composition.key:
+                        missing_champs.append(self.find_champ(champ_name))
+        return missing_champs
+
+    def find_champ(self, champ_name: str) -> Champion:
+        for champ in self._search_champs:
+            if champ.name == champ_name:
+                return champ
+        raise ValueError(f"Champion {champ_name} not found in search champs")
+
 
 if __name__ == "__main__":
-    start_comp = Composition(champions=set([champ for champ in TFT_CHAMPIONS if champ.name in INCLUDE_CHAMPS]))
+
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--include-champs", type=str)
+    args = parser.parse_args()
     composer = Composer()
+
+    if len(args.include_champs) > 0:
+        champions = set()
+        for champ_name in args.include_champs.split(","):
+            champions.add(composer.find_champ(champ_name))
+        start_comp = Composition(champions=champions)
+    else:
+        start_comp = Composition(champions=set([champ for champ in TFT_CHAMPIONS if champ.name in INCLUDE_CHAMPS]))
+
     result = composer.compose(start_comp)

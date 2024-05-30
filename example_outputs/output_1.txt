@@ -1,0 +1,60 @@
+Composition: Ahri,Diana,Hwei,Illaoi,Lee Sin,Lux,Sett,Syndra - Score 12.6 - Cost 27 - arcanist 4,fated 3,dragonlord 2,warden 2,artist 1
+Composition: Diana,Hwei,Illaoi,Janna,Kog'maw,Lee Sin,Syndra,Xayah - Score 13.0 - Cost 27 - dragonlord 4,invoker 2,arcanist 2,artist 1,lovers 1
+Composition: Ahri,Diana,Illaoi,Lee Sin,Lissandra,Sett,Syndra - Score 12.6 - Cost 25 - arcanist 4,fated 3,warden 2,dragonlord 2
+Composition: Ahri,Diana,Illaoi,Lee Sin,Lissandra,Sett,Syndra,Zyra - Score 14.6 - Cost 27 - arcanist 4,fated 3,sage 2,dragonlord 2,warden 2
+Composition: Ahri,Diana,Illaoi,Lee Sin,Lissandra,Ornn,Sett,Syndra - Score 12.6 - Cost 29 - arcanist 4,fated 3,dragonlord 2,warden 2
+Composition: Ahri,Diana,Illaoi,Lee Sin,Lissandra,Neeko,Sett,Syndra - Score 12.6 - Cost 27 - arcanist 4,fated 3,dragonlord 2,warden 2
+Composition: Ahri,Alune,Diana,Illaoi,Lee Sin,Lissandra,Sett,Syndra - Score 14.0 - Cost 28 - arcanist 4,fated 3,dragonlord 2,warden 2,umbral 2
+Composition: Ahri,Diana,Illaoi,Lee Sin,Lissandra,Rakan,Sett,Syndra - Score 15.6 - Cost 30 - arcanist 4,dragonlord 3,fated 3,warden 2,lovers 1
+Composition: Ahri,Diana,Galio,Illaoi,Lee Sin,Lissandra,Sett,Syndra - Score 12.6 - Cost 29 - arcanist 4,fated 3,dragonlord 2,warden 2
+Composition: Ahri,Diana,Gnar,Illaoi,Lee Sin,Lissandra,Sett,Syndra - Score 12.6 - Cost 27 - arcanist 4,fated 3,dragonlord 2,warden 2
+Composition: Ahri,Diana,Illaoi,Lee Sin,Neeko,Sett,Soraka,Syndra - Score 14.1 - Cost 25 - arcanist 4,fated 3,heavenly 2,dragonlord 2,warden 2
+Composition: Ahri,Diana,Illaoi,Lee Sin,Neeko,Sett,Syndra,Yorick - Score 13.0 - Cost 24 - arcanist 4,fated 3,dragonlord 2,warden 2,umbral 2
+Composition: Ahri,Diana,Hwei,Illaoi,Lee Sin,Neeko,Sett,Syndra - Score 13.6 - Cost 27 - arcanist 4,fated 3,dragonlord 2,warden 2,artist 1
+Composition: Ahri,Diana,Illaoi,Lee Sin,Neeko,Sett,Syndra,Udyr - Score 13.6 - Cost 27 - arcanist 4,fated 3,dragonlord 2,warden 2,spirit walker 1
+Composition: Ahri,Alune,Diana,Illaoi,Lee Sin,Neeko,Sett,Syndra - Score 13.0 - Cost 25 - arcanist 4,fated 3,umbral 2,dragonlord 2,warden 2
+Composition: Ahri,Diana,Illaoi,Kayn,Lee Sin,Lissandra,Sett,Syndra - Score 13.1 - Cost 29 - arcanist 4,fated 3,dragonlord 2,warden 2,ghostly 2
+Composition: Ahri,Diana,Illaoi,Lee Sin,Neeko,Sett,Syndra,Volibear - Score 13.6 - Cost 25 - arcanist 4,fated 3,duelist 2,dragonlord 2,warden 2
+Composition: Ahri,Diana,Illaoi,Irelia,Lee Sin,Lissandra,Sett,Syndra - Score 14.6 - Cost 30 - arcanist 4,fated 3,duelist 2,dragonlord 2,warden 2
+Composition: Aatrox,Ahri,Diana,Illaoi,Lee Sin,Lissandra,Sett,Syndra - Score 14.6 - Cost 27 - arcanist 4,fated 3,dragonlord 2,warden 2,ghostly 2
+Composition: Diana,Hwei,Illaoi,Kog'maw,Lee Sin,Lillia,Rakan,Xayah - Score 14.5 - Cost 30 - dragonlord 4,mythic 3,invoker 2,artist 1,lovers 1
+Composition: Ashe,Caitlyn,Diana,Illaoi,Lee Sin,Rakan,Sett,Xayah - Score 13.9 - Cost 30 - dragonlord 4,ghostly 2,sniper 2,warden 2,lovers 1
+Composition: Ahri,Diana,Hwei,Illaoi,Janna,Lee Sin,Morgana,Rakan - Score 14.5 - Cost 27 - dragonlord 4,ghostly 2,sage 2,arcanist 2,artist 1,lovers 1
+Composition: Ahri,Diana,Hwei,Illaoi,Lee Sin,Morgana,Rakan,Xayah - Score 15.5 - Cost 30 - dragonlord 4,ghostly 2,sage 2,arcanist 2,lovers 1,artist 1
+Composition: Ahri,Diana,Illaoi,Lee Sin,Neeko,Rakan,Sett,Syndra - Score 14.6 - Cost 27 - arcanist 4,dragonlord 3,fated 3,warden 2,lovers 1
+Composition: Ahri,Illaoi,Lee Sin,Lissandra,Rakan,Sett,Soraka,Syndra - Score 17.1 - Cost 30 - arcanist 4,fated 3,dragonlord 2,altruist 2,warden 2,lovers 1
+Composition: Ahri,Illaoi,Lee Sin,Neeko,Rakan,Sett,Soraka,Syndra - Score 18.1 - Cost 27 - arcanist 4,fated 3,dragonlord 2,altruist 2,heavenly 2,warden 2,lovers 1
+Composition: Aatrox,Ahri,Galio,Illaoi,Lee Sin,Lissandra,Sett,Syndra - Score 14.6 - Cost 28 - arcanist 4,fated 3,bruiser 2,warden 2,ghostly 2
+Composition: Ahri,Amumu,Illaoi,Lee Sin,Lissandra,Morgana,Sett,Syndra - Score 14.6 - Cost 29 - arcanist 4,fated 3,warden 2,ghostly 2,porcelain 2
+Composition: Ahri,Diana,Illaoi,Janna,Lee Sin,Morgana,Sett,Xayah - Score 15.5 - Cost 27 - dragonlord 4,arcanist 2,warden 2,ghostly 2,sage 2,lovers 1
+Composition: Ahri,Diana,Illaoi,Janna,Lee Sin,Morgana,Rakan,Sett - Score 15.5 - Cost 27 - dragonlord 4,arcanist 2,warden 2,ghostly 2,sage 2,lovers 1
+Composition: Ahri,Diana,Illaoi,Janna,Lee Sin,Sett,Syndra,Xayah - Score 15.6 - Cost 27 - dragonlord 4,fated 3,arcanist 2,warden 2,lovers 1
+Composition: Ahri,Illaoi,Janna,Lee Sin,Rakan,Sett,Syndra,Xayah - Score 16.6 - Cost 29 - dragonlord 4,fated 3,arcanist 2,warden 2,lovers 1
+Composition: Ahri,Diana,Illaoi,Lee Sin,Rakan,Sett,Syndra,Xayah - Score 16.6 - Cost 30 - dragonlord 4,fated 3,arcanist 2,warden 2,lovers 1
+Composition: Ahri,Illaoi,Janna,Lee Sin,Lissandra,Rakan,Sett,Syndra - Score 15.6 - Cost 29 - arcanist 4,dragonlord 3,fated 3,warden 2,lovers 1
+Composition: Ahri,Illaoi,Lee Sin,Neeko,Rakan,Sett,Syndra,Xayah - Score 15.6 - Cost 29 - arcanist 4,dragonlord 3,fated 3,warden 2,lovers 1
+Composition: Ahri,Amumu,Illaoi,Lee Sin,Lissandra,Rakan,Sett,Syndra - Score 16.6 - Cost 30 - arcanist 4,fated 3,dragonlord 2,warden 2,porcelain 2,lovers 1
+Composition: Ahri,Amumu,Gnar,Illaoi,Lee Sin,Sett,Syndra,Xayah - Score 15.6 - Cost 27 - warden 4,fated 3,arcanist 2,dragonlord 2,lovers 1
+Composition: Ahri,Illaoi,Lee Sin,Lissandra,Sett,Syndra,Udyr,Yorick - Score 16.0 - Cost 29 - arcanist 4,fated 3,warden 2,umbral 2,behemoth 2,spirit walker 1
+Composition: Ahri,Diana,Illaoi,Lee Sin,Neeko,Sett,Syndra,Wukong - Score 15.799999999999999 - Cost 27 - arcanist 4,fated 3,heavenly 2,warden 2,dragonlord 2,great 1
+Composition: Ahri,Illaoi,Lee Sin,Qiyana,Sett,Syndra,Wukong,Zoe - Score 15.799999999999999 - Cost 27 - arcanist 4,fated 3,duelist 2,warden 2,heavenly 2,great 1
+Composition: Ahri,Illaoi,Lee Sin,Lissandra,Qiyana,Sett,Syndra,Xayah - Score 16.6 - Cost 29 - arcanist 4,fated 3,duelist 2,dragonlord 2,warden 2,lovers 1
+Composition: Amumu,Caitlyn,Illaoi,Lee Sin,Lissandra,Nautilus,Rakan,Sett - Score 16.5 - Cost 30 - warden 4,ghostly 2,arcanist 2,dragonlord 2,porcelain 2,lovers 1
+Composition: Aphelios,Gnar,Hwei,Illaoi,Kog'maw,Nautilus,Sett,Syndra - Score 18.0 - Cost 27 - warden 4,fated 3,mythic 3,sniper 2,arcanist 2,artist 1
+Composition: Amumu,Ashe,Hwei,Illaoi,Kog'maw,Nautilus,Sett,Syndra - Score 16.4 - Cost 29 - warden 4,mythic 3,sniper 2,arcanist 2,porcelain 2,artist 1
+Composition: Amumu,Hwei,Illaoi,Kindred,Kog'maw,Nautilus,Sett,Syndra - Score 16.6 - Cost 27 - warden 4,fated 3,mythic 3,arcanist 2,artist 1
+Composition: Azir,Gnar,Hwei,Illaoi,Kog'maw,Nautilus,Sett,Syndra - Score 17.0 - Cost 29 - warden 4,mythic 3,dryad 2,invoker 2,arcanist 2,artist 1
+Composition: Hwei,Illaoi,Kog'maw,Lillia,Nautilus,Neeko,Ornn,Wukong - Score 17.7 - Cost 28 - mythic 5,heavenly 2,arcanist 2,warden 2,invoker 2,great 1,artist 1
+Composition: Caitlyn,Hwei,Illaoi,Lissandra,Nautilus,Neeko,Syndra,Wukong - Score 17.2 - Cost 29 - arcanist 4,mythic 3,ghostly 2,warden 2,heavenly 2,artist 1,great 1
+Composition: Aatrox,Ahri,Hwei,Illaoi,Lissandra,Sett,Sylas,Syndra - Score 18.0 - Cost 29 - arcanist 4,fated 3,warden 2,ghostly 2,bruiser 2,umbral 2,artist 1
+Composition: Ahri,Alune,Hwei,Illaoi,Lillia,Neeko,Sett,Syndra - Score 18.0 - Cost 27 - arcanist 4,fated 3,mythic 3,invoker 2,umbral 2,warden 2,artist 1
+Composition: Ahri,Aphelios,Hwei,Illaoi,Nautilus,Neeko,Syndra,Wukong - Score 17.799999999999997 - Cost 27 - arcanist 4,fated 3,mythic 3,warden 2,heavenly 2,artist 1,great 1
+Composition: Ahri,Hwei,Illaoi,Nautilus,Neeko,Syndra,Thresh,Wukong - Score 17.799999999999997 - Cost 27 - arcanist 4,fated 3,mythic 3,warden 2,heavenly 2,artist 1,great 1
+Composition: Caitlyn,Gnar,Hwei,Illaoi,Kindred,Nautilus,Sett,Syndra - Score 17.6 - Cost 26 - warden 4,fated 3,ghostly 2,arcanist 2,dryad 2,artist 1
+Composition: Ahri,Ashe,Illaoi,Lissandra,Sett,Syndra,Udyr,Yorick - Score 18.0 - Cost 29 - arcanist 4,fated 3,behemoth 2,umbral 2,warden 2,porcelain 2,spirit walker 1
+Composition: Ahri,Amumu,Illaoi,Nautilus,Sett,Shen,Syndra,Udyr - Score 17.6 - Cost 27 - warden 4,fated 3,behemoth 2,arcanist 2,ghostly 2,spirit walker 1
+Composition: Ahri,Illaoi,Lissandra,Sett,Shen,Sylas,Syndra,Udyr - Score 18.0 - Cost 29 - arcanist 4,fated 3,behemoth 2,ghostly 2,warden 2,umbral 2,spirit walker 1
+Composition: Ahri,Ashe,Illaoi,Lissandra,Sett,Shen,Syndra,Udyr - Score 18.6 - Cost 29 - arcanist 4,fated 3,behemoth 2,ghostly 2,warden 2,porcelain 2,spirit walker 1
+Composition: Aatrox,Aphelios,Caitlyn,Illaoi,Morgana,Sett,Sylas,Syndra - Score 18.4 - Cost 26 - ghostly 4,fated 3,sniper 2,arcanist 2,warden 2,bruiser 2,umbral 2
+Composition: Aphelios,Gnar,Illaoi,Kog'maw,Lillia,Nautilus,Sett,Syndra - Score 18.0 - Cost 26 - warden 4,fated 3,mythic 3,sniper 2,arcanist 2,invoker 2
+Composition: Gnar,Hwei,Illaoi,Kindred,Kog'maw,Nautilus,Sett,Syndra - Score 18.6 - Cost 26 - warden 4,mythic 3,fated 3,arcanist 2,dryad 2,artist 1
