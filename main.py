@@ -138,6 +138,7 @@ class Composer:
         random.shuffle(search_champs)
 
         max_iterations_idx = max(num_champs - len(INCLUDE_CHAMPS), 0)
+
         max_iterations = MAX_ATTEMPTS[max_iterations_idx]
 
         for i, champion in enumerate(search_champs):

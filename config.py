@@ -57,7 +57,7 @@ TRAIT_SCORE_WEIGHT = {
 }
 
 # This starts from the non-fixed num champs
-MAX_ATTEMPTS = [999, 25, 12, 10, 7, 5, 3, 2, 2, 1]
+MAX_ATTEMPTS = [999, 200, 100, 50, 25, 15, 10, 7, 5, 2]
 
 MIN_SCORE = 7
 
