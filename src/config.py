@@ -3,9 +3,12 @@ MIN_MAX_UNIT_BY_COST = {
     1: [0, 1],
     2: [0, 2],
     3: [1, 3],
-    4: [2, 4],
-    5: [1, 3],
+    4: [1, 4],
+    5: [0, 3],
 }
+
+
+
 
 MIN_DIFFERENT_TRAITS_PER_LEVEL = {
     2: 1,
@@ -14,7 +17,8 @@ MIN_DIFFERENT_TRAITS_PER_LEVEL = {
     8: 4,
 }
 
-INCLUDE_CHAMPS = [("Ahri", "Caitlyn", "Kog'maw"), ("Diana", "Illaoi"), ("Syndra", "Ornn", "Lee Sin"), ("Hwei", "Sett")]
+# INCLUDE_CHAMPS = [("Ahri", "Caitlyn", "Kog'maw"), ("Neeko", "Diana", "Illaoi"), ("Hwei", "Sett")]
+INCLUDE_CHAMPS = []
 EXCLUDE_CHAMPS = []
 
 INCLUDE_TRAITS = []
@@ -37,6 +41,7 @@ TRAIT_SCORE_WEIGHT = {
     "great_1": 1.2,
     "fated_7": 1.2,
     "sage_4": 1.2,
+
     "umbral_4": 0.7,
     "storyweaver_5": 0.7,
     "duelist_4": 0.7,
@@ -60,23 +65,27 @@ MAX_ATTEMPTS = [999, 200, 100, 50, 25, 15, 10, 7, 5, 2]
 
 MIN_SCORE = 7
 
-
 MIN_TRAIT_LEVEL = 4
 
 UNIT_SCORE = {
     "Sett": 1,
-    "Ahri": 0.5,
-    "Caitlyn": 0.5,
-    "Kog'maw": 0.5,
     "Rakan": 1,
     "Udyr": 1,
     "Wukong": 1,
     "Hwei": 1,
     "Xayah": 1,
     "Lissandra": 1,
+
+    "Caitlyn": 0.5,
+    "Kog'maw": 0.5,
+    "Ahri": 0.5,
+    "Soraka": 0.5,
+    "Syndra": 0.5,
+
+    "Kobuko": -0.5,
+
     "Riven": -1,
     "Rek'sai": -1,
-    "Kobuko": -0.5,
     "Jax": -1,
     "Garen": -1,
     "Sivir": -1,
@@ -84,12 +93,11 @@ UNIT_SCORE = {
     "Malphite": -1,
     "Cho'gath": -1,
     "Yone": -1,
-    "Kayn": -1.5,
     "Kai'sa": -1,
     "Teemo": -1,
     "Lux": -1,
-    "Bard": -1.5,
     "Tristana": -1,
-    "Soraka": 0.5,
-    "Syndra": 0.5,
+    "Bard": -1,
+    
+    "Kayn": -1.5,
 }
