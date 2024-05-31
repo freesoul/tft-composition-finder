@@ -2,6 +2,8 @@
 
 This little project aims to provide a fast brute force, but with some configurable heuristics, search for completing a team, given any number of champions.  
   
+It is especially proven to work good if you play with the Exalted strategy, and start searching for a team size of 5/6. When you unlock more levels, relaunch the command with what you want to keep.  
+  
 You can configure your preferences in config.py.  
   
 Random example usage:  
