@@ -1,0 +1,3 @@
+- Genetic algorithm.
+- Argument to allow discard of n champs from the given ones.
+    - Multiprocessing for the previous.
