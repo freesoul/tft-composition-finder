@@ -7,6 +7,7 @@ from tft_composition_finder.sets.set_12.config import (
     TRAIT_SCORE_WEIGHT,
     UNIT_SCORE,
 )
+from tft_composition_finder.fitness import fitness
 
 
 @dataclasses.dataclass
@@ -57,18 +58,7 @@ class Composition:
 
     @property
     def score(self) -> float:
-        score = 0.0
-        for trait, breakpoint_num in self.traits_with_breakpoints.items():
-            trait_key = f"{trait}_{breakpoint_num}"
-            try:
-                score += TRAIT_SCORE_WEIGHT[trait_key] * breakpoint_num
-            except KeyError:
-                score += breakpoint_num
-
-        for champ in self.champions:
-            if champ.name in UNIT_SCORE:
-                score += UNIT_SCORE[champ.name]
-        return score
+        return fitness(self)
 
     def pretty_print(self):
         """
