@@ -1,21 +1,15 @@
-import time
-import random
 from copy import deepcopy
-from typing import Set, Dict, List, Optional, Generator
+from typing import List, Optional, Generator
 
 from tft_composition_finder.schemas.emblems import Emblems
 from tft_composition_finder.schemas.composition import Composition
-from tft_composition_finder.sets.set_12.champions import TFT_CHAMPIONS, Champion
 from tft_composition_finder.sets.set_12.config import (
     INCLUDE_CHAMPS,
     MAX_ATTEMPTS,
 )
 from tft_composition_finder.composers.base_composer import BaseComposer
 
-random.seed(time.time())
-
-
-class Composer(BaseComposer):
+class BruteforceComposer(BaseComposer):
 
     def __init__(
         self,
