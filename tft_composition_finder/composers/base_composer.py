@@ -30,10 +30,10 @@ class BaseComposer:
         self._emblems_dict: Dict[str, int] = {emblem.name: emblem.num for emblem in emblems}
         self._found_compositions: List[Composition] = []
         self._found_composition_keys: Set[str] = set()
+        self._max_cost = max_cost
         self._searchable_champs = self._get_searchable_champs()
         self._required_champs = required_champs
         self._fuzzy = fuzzy
-        self._max_cost = max_cost
         self._num_required_champs = len(required_champs) - fuzzy
 
     def compose(self) -> Generator[Composition, None, None]:
@@ -42,7 +42,7 @@ class BaseComposer:
     def _get_searchable_champs(self) -> List[Champion]:
         champs = []
         for champ in TFT_CHAMPIONS:
-            if champ.cost > self._max_cost:
+            if champ.cost > self._max_cost and not champ.name in self._required_champs:
                 continue
             if champ.name in EXCLUDE_CHAMPS:
                 continue
