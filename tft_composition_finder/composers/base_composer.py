@@ -31,8 +31,8 @@ class BaseComposer:
         self._found_compositions: List[Composition] = []
         self._found_composition_keys: Set[str] = set()
         self._max_cost = max_cost
-        self._searchable_champs = self._get_searchable_champs()
         self._required_champs = required_champs
+        self._searchable_champs = self._get_searchable_champs()
         self._fuzzy = fuzzy
         self._num_required_champs = len(required_champs) - fuzzy
 
