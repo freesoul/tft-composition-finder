@@ -77,3 +77,6 @@ Composition: Alune,Illaoi,Janna,Kog'maw,Lee Sin,Lillia,Lissandra,Sett - Score 18
 Composition: Alune,Illaoi,Janna,Kog'maw,Lee Sin,Lillia,Sett,Xayah - Score 18.9 - Cost 27 - invoker 4,dragonlord 3,mythic 3,umbral 2,warden 2,duelist 2,lovers 1
 ```
 
+
+TODO: fuzzy arg (on include champs), genetic algo, max champion cost arg
+
