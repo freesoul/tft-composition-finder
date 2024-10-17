@@ -46,7 +46,7 @@ def _get_units_score(composition: Composition) -> float:
 
 def _has_required_num_traits(composition: Composition) -> bool:
     new_composition_num_traits = len(composition.traits)
-    num_champs = composition.champions
+    num_champs = len(composition.champions)
     for min_num_champs, min_num_traits in MIN_DIFFERENT_TRAITS_PER_LEVEL.items():
         if num_champs >= min_num_champs and new_composition_num_traits < min_num_traits:
             return False

@@ -34,7 +34,7 @@ def get_cli_args() -> CliArgs:
     if args.emblems:
         emblems = [Emblems.from_str(emblem_str) for emblem_str in args.emblems.split(",")]
     else:
-        emblems = None
+        emblems = []
 
     return CliArgs(
         include_champs=args.include_champs,
@@ -48,21 +48,12 @@ if __name__ == "__main__":
 
     args = get_cli_args()
 
-    # composer = Composer(target_team_size=args.team_size, emblems=emblems)
-
-    # if len(args.include_champs) > 0:
-    #     champions = set()
-    #     for champ_name in args.include_champs.split(","):
-    #         champions.add(composer._get_champ(champ_name))
-    #     start_comp = Composition(champions=champions, emblems=composer._emblems_dict)
-    # else:
-    #     start_comp = Composition(
-    #         champions=set([champ for champ in TFT_CHAMPIONS if champ.name in INCLUDE_CHAMPS]),
-    #         emblems=composer._emblems_dict,
-    #     )
-
-    # result = composer.compose(start_comp)
-
-    # print("\nDone. Best compositions:")
-    # for comp in composer._found_compositions:
-    #     comp.pretty_print()
+    if args.method == "bruteforce":
+        composer = BruteforceComposer(args.team_size, args.emblems)
+    elif args.method == "genetic":
+        raise NotImplementedError("Genetic method not implemented yet")
+    else:
+        raise ValueError("Invalid method")
+    
+    for composition in composer.compose():
+        composition.pretty_print()

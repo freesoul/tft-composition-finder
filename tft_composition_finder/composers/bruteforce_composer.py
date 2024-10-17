@@ -56,17 +56,8 @@ class BruteforceComposer(BaseComposer):
             if new_composition.key in self._found_composition_keys:
                 continue
 
-            # Skip if < 2 num champs
-            if new_composition_num_champs < 2:
-                continue
-
-            # Skip null scores
-            score = new_composition.score  # compute once
-            if score == 0.0:
-                continue
-
             # Keep the composition
-            if self._maybe_keep_composition(new_composition):
+            if new_composition_num_champs >= 2 and self._maybe_keep_composition(new_composition):
                 yield new_composition
 
             # Delegate the yielding of deeper compositions to the next recursive call

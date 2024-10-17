@@ -50,15 +50,17 @@ class BaseComposer:
 
     def _maybe_keep_composition(self, composition: Composition) -> bool:
         kept = False
-        if len(self._found_compositions) < KEEP_N_BEST:
-            self._found_compositions.append(composition)
-            composition.pretty_print()
-            kept = True
-        elif composition.score > self._found_compositions[-1].score:
-            self._found_compositions[-1] = composition
-            self._found_compositions.sort(key=lambda x: x.score, reverse=True)
-            composition.pretty_print()
-            kept = True
+        score = composition.score  # calculate once
+        if score > 0.0:
+            if len(self._found_compositions) < KEEP_N_BEST:
+                self._found_compositions.append(composition)
+                # composition.pretty_print()
+                kept = True
+            elif score > self._found_compositions[-1].score:
+                self._found_compositions[-1] = composition
+                self._found_compositions.sort(key=lambda x: x.score, reverse=True)
+                # composition.pretty_print()
+                kept = True
         self._found_composition_keys.add(composition.key)
         return kept
 

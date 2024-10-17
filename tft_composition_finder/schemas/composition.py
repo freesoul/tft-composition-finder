@@ -3,7 +3,6 @@ import dataclasses
 
 from tft_composition_finder.sets.set_12.champions import Champion
 from tft_composition_finder.sets.set_12.traits import TRAIT_BREAKPOINTS_DICT, Trait
-from tft_composition_finder.fitness import fitness
 
 
 @dataclasses.dataclass
@@ -54,6 +53,9 @@ class Composition:
 
     @property
     def score(self) -> float:
+        # For now this is here to prevent the circular import of Composition -> fitness -> Composition
+        # TODO: refacto so that either we don't use .score
+        from tft_composition_finder.fitness import fitness
         return fitness(self)
 
     def pretty_print(self):
