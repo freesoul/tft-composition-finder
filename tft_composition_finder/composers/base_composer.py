@@ -21,6 +21,7 @@ class BaseComposer:
         self,
         target_team_size: int = 7,
         emblems: List[Emblems] = [],
+        required_champs: List[Champion] = INCLUDE_CHAMPS,
     ) -> None:
         self._target_team_size = target_team_size
         self._emblems = emblems
@@ -28,12 +29,13 @@ class BaseComposer:
         self._found_compositions: List[Composition] = []
         self._found_composition_keys: Set[str] = set()
         self._searchable_champs = [champ for champ in TFT_CHAMPIONS if champ.name not in EXCLUDE_CHAMPS]
+        self._required_champs = required_champs
 
     def compose(self) -> Generator[Composition, None, None]:
         pass
 
     def _has_required_champs(self, composition: Composition) -> bool:
-        for req_champ in INCLUDE_CHAMPS:
+        for req_champ in self._required_champs:
             if isinstance(req_champ, str):
                 if req_champ not in composition.key:
                     return False
@@ -66,7 +68,7 @@ class BaseComposer:
 
     def _pick_missing_required_champs(self, composition: Composition) -> List[Champion]:
         missing_champs = []
-        for req_champ in INCLUDE_CHAMPS:
+        for req_champ in self._required_champs:
             if isinstance(req_champ, str):
                 if req_champ not in composition.key:
                     missing_champs.append(self._get_champ(req_champ))

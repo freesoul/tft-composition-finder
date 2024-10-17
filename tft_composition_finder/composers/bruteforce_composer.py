@@ -3,6 +3,7 @@ from typing import List, Optional, Generator
 
 from tft_composition_finder.schemas.emblems import Emblems
 from tft_composition_finder.schemas.composition import Composition
+from tft_composition_finder.schemas.champion import Champion
 from tft_composition_finder.sets.set_12.config import (
     INCLUDE_CHAMPS,
     MAX_ATTEMPTS,
@@ -15,8 +16,9 @@ class BruteforceComposer(BaseComposer):
         self,
         target_team_size: int = 7,
         emblems: List[Emblems] = [],
+        required_champs: List[Champion] = INCLUDE_CHAMPS,
     ) -> None:
-        super().__init__(target_team_size, emblems)
+        super().__init__(target_team_size, emblems, required_champs)
 
     def compose(self, composition: Optional[Composition] = None, depth: int = 0) -> Generator[Composition, None, None]:
 
@@ -34,7 +36,7 @@ class BruteforceComposer(BaseComposer):
         search_champs = self._get_next_sampleable_champs(composition)
 
         # Iterate over the champions and test the compositions
-        max_iterations_idx = max(num_champs - len(INCLUDE_CHAMPS), 0)
+        max_iterations_idx = max(num_champs - len(self._required_champs), 0)
 
         max_iterations = MAX_ATTEMPTS[max_iterations_idx]
 

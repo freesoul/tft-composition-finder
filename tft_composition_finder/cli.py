@@ -22,7 +22,9 @@ def get_cli_args() -> CliArgs:
     parser.add_argument("--method", type=str, default="bruteforce", choices=["bruteforce", "genetic"])
     args = parser.parse_args()
 
-    if not args.include_champs:
+    if args.include_champs:
+        include_champs = [champ.strip() for champ in args.include_champs.split(",")]
+    else:
         raise ValueError("You must provide at least one champion to include")
 
     if args.team_size < 1:
@@ -37,7 +39,7 @@ def get_cli_args() -> CliArgs:
         emblems = []
 
     return CliArgs(
-        include_champs=args.include_champs,
+        include_champs=include_champs,
         team_size=args.team_size,
         emblems=emblems,
         method=args.method,
@@ -49,7 +51,7 @@ if __name__ == "__main__":
     args = get_cli_args()
 
     if args.method == "bruteforce":
-        composer = BruteforceComposer(args.team_size, args.emblems)
+        composer = BruteforceComposer(args.team_size, args.emblems, required_champs=args.include_champs)
     elif args.method == "genetic":
         raise NotImplementedError("Genetic method not implemented yet")
     else:
