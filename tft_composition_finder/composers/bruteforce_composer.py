@@ -17,8 +17,10 @@ class BruteforceComposer(BaseComposer):
         target_team_size: int = 7,
         emblems: List[Emblems] = [],
         required_champs: List[Champion] = INCLUDE_CHAMPS,
+        fuzzy: int = 0,
+        max_cost: int = 5,
     ) -> None:
-        super().__init__(target_team_size, emblems, required_champs)
+        super().__init__(target_team_size, emblems, required_champs, fuzzy, max_cost)
 
     def compose(self, composition: Optional[Composition] = None, depth: int = 0) -> Generator[Composition, None, None]:
 

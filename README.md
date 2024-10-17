@@ -78,5 +78,4 @@ Composition: Alune,Illaoi,Janna,Kog'maw,Lee Sin,Lillia,Sett,Xayah - Score 18.9 -
 ```
 
 
-TODO: fuzzy arg (on include champs), genetic algo, max champion cost arg
 

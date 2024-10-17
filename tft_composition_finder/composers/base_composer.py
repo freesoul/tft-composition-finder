@@ -22,27 +22,48 @@ class BaseComposer:
         target_team_size: int = 7,
         emblems: List[Emblems] = [],
         required_champs: List[Champion] = INCLUDE_CHAMPS,
+        fuzzy: int = 0,
+        max_cost: int = 5,
     ) -> None:
         self._target_team_size = target_team_size
         self._emblems = emblems
         self._emblems_dict: Dict[str, int] = {emblem.name: emblem.num for emblem in emblems}
         self._found_compositions: List[Composition] = []
         self._found_composition_keys: Set[str] = set()
-        self._searchable_champs = [champ for champ in TFT_CHAMPIONS if champ.name not in EXCLUDE_CHAMPS]
+        self._searchable_champs = self._get_searchable_champs()
         self._required_champs = required_champs
+        self._fuzzy = fuzzy
+        self._max_cost = max_cost
+        self._num_required_champs = len(required_champs) - fuzzy
 
     def compose(self) -> Generator[Composition, None, None]:
         pass
 
+    def _get_searchable_champs(self) -> List[Champion]:
+        champs = []
+        for champ in TFT_CHAMPIONS:
+            if champ.cost > self._max_cost:
+                continue
+            if champ.name in EXCLUDE_CHAMPS:
+                continue
+            champs.append(champ)
+        return champs
+        
+
     def _has_required_champs(self, composition: Composition) -> bool:
+        if self._num_required_champs == 0:
+            return True
+        count = 0
         for req_champ in self._required_champs:
             if isinstance(req_champ, str):
-                if req_champ not in composition.key:
-                    return False
+                if req_champ in composition.key:
+                    count += 1
             elif isinstance(req_champ, tuple):
-                if not any(champ in composition.key for champ in req_champ):
-                    return False
-        return True
+                if any(champ in composition.key for champ in req_champ):
+                    count += 1
+            if count >= self._num_required_champs:
+                return True
+        return count >= self._num_required_champs
 
     def _get_champ(self, champ_name: str) -> Champion:
         for champ in self._searchable_champs:
@@ -68,7 +89,7 @@ class BaseComposer:
 
     def _pick_missing_required_champs(self, composition: Composition) -> List[Champion]:
         missing_champs = []
-        for req_champ in self._required_champs:
+        for req_champ in random.sample(self._required_champs, k=self._num_required_champs):
             if isinstance(req_champ, str):
                 if req_champ not in composition.key:
                     missing_champs.append(self._get_champ(req_champ))
