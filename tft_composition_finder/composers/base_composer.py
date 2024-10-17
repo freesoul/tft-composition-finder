@@ -83,5 +83,5 @@ class BaseComposer:
             search_champs = self._pick_missing_required_champs(composition)
         else:
             search_champs = self._searchable_champs
-            random.shuffle(search_champs)
+        random.shuffle(search_champs)
         return search_champs

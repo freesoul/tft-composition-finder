@@ -4,7 +4,7 @@ from tft_composition_finder.schemas.champion import Champion
 TFT_CHAMPIONS = [
     Champion(name="Ahri", traits={"Arcana", "Scholar"}, cost=2, damage_type="magic"),
     Champion(name="Akali", traits={"Multistriker", "Warrior", "Pyro"}, cost=2, damage_type="magic"),
-    Champion(name="Ashe", traits={"Eldritch", "Hunter"}, cost=1, damage_type="physical"),
+    Champion(name="Ashe", traits={"Eldritch", "Multistriker"}, cost=1, damage_type="physical"),
     Champion(name="Bard", traits={"Sugarcraft", "Preserver"}, cost=4, damage_type="magic"),
     Champion(name="Blitzcrank", traits={"Honeymancy", "Vanguard"}, cost=1, damage_type="physical"),
     Champion(name="Briar", traits={"Shapeshifter", "Eldritch", "Ravenous"}, cost=5, damage_type="physical"),

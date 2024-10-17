@@ -1,6 +1,6 @@
 
 MIN_MAX_UNIT_BY_COST = {
-    1: [0, 1],
+    1: [0, 2],
     2: [0, 2],
     3: [1, 3],
     4: [1, 4],
@@ -131,9 +131,9 @@ TRAIT_SCORE_WEIGHT = {
 # This starts from the non-fixed num champs
 MAX_ATTEMPTS = [999, 200, 100, 50, 25, 15, 10, 7, 5, 2]
 
-MIN_SCORE = 7
+MIN_SCORE = 0.0
 
-MIN_TRAIT_LEVEL = 4
+MIN_TRAIT_LEVEL = 2
 
 UNIT_SCORE = {
     "Diana": 1,
