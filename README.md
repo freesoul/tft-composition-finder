@@ -1,15 +1,14 @@
-# TFT Fast (or not) Composition Finder
+# TFT composition finder
 
-This little project aims to provide a fast brute force, but with some configurable heuristics, search for completing a team, given any number of champions.  
+## Available sets
+The following sets come with default config and constants. To use another thant he last, the file `sets/__init__.py` has to be changed. You may do a pull request to change this to a config.
+- Set 12 (current)
+- Set 9
   
-It is especially proven to work good if you play with the Exalted strategy, and start searching for a team size of 5/6. When you unlock more levels, relaunch the command with what you want to keep.  
-  
-You can configure your preferences in config.py.  
-  
-Random example usage:  
+## Example usage (set 9)
   
 ```
-python .\src\main.py --team-size 8 --include-champs "Sett,Kog'maw,Illaoi,Lee Sin"  --emblems mythic_1,duelist_1
+python python -m  tft_composition_finder.cli --include-champs "Sett,Kog'maw,Illaoi,Lee Sin"  --emblems mythic_1,duelist_1
 ```  
   
 Output:  
