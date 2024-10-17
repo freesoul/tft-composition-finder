@@ -3,10 +3,6 @@ import dataclasses
 
 from tft_composition_finder.sets.set_12.champions import Champion
 from tft_composition_finder.sets.set_12.traits import TRAIT_BREAKPOINTS_DICT, Trait
-from tft_composition_finder.sets.set_12.config import (
-    TRAIT_SCORE_WEIGHT,
-    UNIT_SCORE,
-)
 from tft_composition_finder.fitness import fitness
 
 
@@ -47,13 +43,13 @@ class Composition:
         )
 
     @property
-    def total_cost(self) -> int:
+    def cost(self) -> int:
         return sum([champion.cost for champion in self.champions])
 
     def includes_trait(self, trait: str) -> bool:
         return any(trait in champion.traits for champion in self.champions)
 
-    def get_num_champs_n_cost(self, n_cost: int) -> int:
+    def get_num_champs_with_n_cost(self, n_cost: int) -> int:
         return sum([1 for champion in self.champions if champion.cost == n_cost])
 
     @property
@@ -65,7 +61,7 @@ class Composition:
         Prints the composition, and each trait active with its highest breakpoint
         """
         msg = (
-            f"Composition: {self.key} - Score {self.score} - Cost {self.total_cost} - "
+            f"Composition: {self.key} - Score {self.score} - Cost {self.cost} - "
         )
         traits = []
         for trait, count in self.traits_with_breakpoints.items():
@@ -81,3 +77,22 @@ class Composition:
             if level > max_lvl:
                 max_lvl = level
         return max_lvl
+
+    def __add__(self, other):
+        return Composition(
+            champions=self.champions.union(other.champions),
+            emblems=self.emblems,
+        )
+    
+    def __and__(self, other):
+        return Composition(
+            champions=self.champions.intersection(other.champions),
+            emblems=self.emblems,
+        )
+    
+    def __sub__(self, other):
+        return Composition(
+            champions=self.champions.difference(other.champions),
+            emblems=self.emblems,
+        )
+    

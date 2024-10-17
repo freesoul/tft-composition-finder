@@ -6,6 +6,7 @@ from tft_composition_finder.sets import (
     MIN_MAX_UNIT_BY_COST,
     MIN_SCORE,
     MIN_TRAIT_LEVEL,
+    MIN_DIFFERENT_TRAITS_PER_LEVEL,
 )
 
 
@@ -18,7 +19,7 @@ def _has_required_traits(composition: Composition) -> bool:
 
 def _has_n_costs_in_range(composition: Composition) -> bool:
     for cost, min_max in MIN_MAX_UNIT_BY_COST.items():
-        num_champs_n_cost = composition.get_num_champs_n_cost(cost)
+        num_champs_n_cost = composition.get_num_champs_with_n_cost(cost)
         if num_champs_n_cost < min_max[0] or num_champs_n_cost > min_max[1]:
             return False
     return True
@@ -43,6 +44,15 @@ def _get_units_score(composition: Composition) -> float:
     return score
 
 
+def _has_required_num_traits(composition: Composition) -> bool:
+    new_composition_num_traits = len(composition.traits)
+    num_champs = composition.champions
+    for min_num_champs, min_num_traits in MIN_DIFFERENT_TRAITS_PER_LEVEL.items():
+        if num_champs >= min_num_champs and new_composition_num_traits < min_num_traits:
+            return False
+        return True
+
+
 def fitness(
     composition: Composition,
 ) -> float:
@@ -57,6 +67,9 @@ def fitness(
         return 0.0
 
     if composition.max_trait_level < MIN_TRAIT_LEVEL:
+        return 0.0
+
+    if not _has_required_num_traits(composition):
         return 0.0
 
     score = _get_traits_score(composition) + _get_units_score(composition)
