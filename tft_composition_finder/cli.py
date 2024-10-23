@@ -4,6 +4,7 @@ import dataclasses
 
 from tft_composition_finder.schemas.emblems import Emblems
 from tft_composition_finder.composers.bruteforce_composer import BruteforceComposer
+from tft_composition_finder.composers.genetic_composer import GeneticComposer
 
 
 @dataclasses.dataclass
@@ -23,7 +24,7 @@ def get_cli_args() -> CliArgs:
     parser.add_argument("--emblems", type=str, default=None, help="Comma-separated list of emblems to include in the composition")
     parser.add_argument("--fuzzy", type=int, default=0, help="Ignore up to this number of required champs")
     parser.add_argument("--max-cost", type=int, default=5, help="Maximum cost of champions to include")
-    parser.add_argument("--method", type=str, default="bruteforce", choices=["bruteforce", "genetic"])
+    parser.add_argument("--method", type=str, default="genetic", choices=["bruteforce", "genetic"])
     args = parser.parse_args()
 
     if args.include_champs:
@@ -52,7 +53,7 @@ if __name__ == "__main__":
     if args.method == "bruteforce":
         composer = BruteforceComposer(args.team_size, args.emblems, required_champs=args.include_champs, fuzzy=args.fuzzy, max_cost=args.max_cost)
     elif args.method == "genetic":
-        raise NotImplementedError("Genetic method not implemented yet")
+        composer = GeneticComposer(args.team_size, args.emblems, required_champs=args.include_champs, fuzzy=args.fuzzy, max_cost=args.max_cost)
     else:
         raise ValueError("Invalid method")
 

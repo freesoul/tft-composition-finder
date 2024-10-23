@@ -8,10 +8,6 @@ MIN_MAX_UNIT_BY_COST = {
 }
 
 MIN_DIFFERENT_TRAITS_PER_LEVEL = {
-    2: 1,
-    4: 2,
-    6: 3,
-    # 8: 4,
 }
 
 INCLUDE_CHAMPS = []
@@ -31,11 +27,11 @@ TRAIT_SCORE_WEIGHT = {
     "honeymancy_7": 1,
 
     "faerie_3": 0.5,
-    "faerie_5": 0.7,
-    "faerie_7": 1.2,
+    "faerie_5": 2,
+    "faerie_7": 3,
     "faerie_9": 4,
 
-    "eldritch_3": 0.2,
+    "eldritch_3": 0.1,
     "eldritch_5": 0.5,
     "eldritch_7": 1.2,
     "eldritch_10": 4,
@@ -44,25 +40,25 @@ TRAIT_SCORE_WEIGHT = {
     "warrior_4": 1,
     "warrior_6": 2,
 
-    "multistriker_3": 0.4,
-    "multistriker_5": 0.7,
+    "multistriker_3": 0.2,
+    "multistriker_5": 0.5,
     "multistriker_7": 1.2,
     "multistriker_9": 3,
 
-    "chrono_2": 0.4,
+    "chrono_2": 0.2,
     "chrono_4": 0.8,
     "chrono_6": 1.9,
 
-    "arcana_2": 0.2,
+    "arcana_2": 0.1,
     "arcana_3": 0.4,
     "arcana_4": 1.2,
     "arcana_5": 1.8,
 
-    "blaster_2": 0.4,
+    "blaster_2": 0.2,
     "blaster_4": 1,
     "blaster_6": 1.8,
 
-    "pyro_2": 0.3,
+    "pyro_2": 0.1,
     "pyro_3": 0.5,
     "pyro_4": 1,
     "pyro_5": 1.8,
@@ -70,29 +66,29 @@ TRAIT_SCORE_WEIGHT = {
     "dragon_2": 0.4,
     "dragon_3": 1.6,
 
-    "frost_3": 0.4,
+    "frost_3": 0.2,
     "frost_5": 1,
     "frost_7": 1.6,
     "frost_9": 4,
 
-    "hunter_2": 0.5,
+    "hunter_2": 0.3,
     "hunter_4": 0.8,
     "hunter_6": 2.2,
 
-    "scholar_2": 0.5,
+    "scholar_2": 0.1,
     "scholar_4": 1.3,
     "scholar_6": 2.2,
 
-    "witchcraft_2": 0.5,
+    "witchcraft_2": 0.2,
     "witchcraft_4": 0.8,
     "witchcraft_6": 1.5,
     "witchcraft_8": 3,
 
-    "sugarcraft_2": 0.5,
+    "sugarcraft_2": 0.6,
     "sugarcraft_4": 1.2,
     "sugarcraft_6": 3,
 
-    "shapeshifter_2": 0.5,
+    "shapeshifter_2": 0.2,
     "shapeshifter_4": 0.8,
     "shapeshifter_6": 1.5,
     "shapeshifter_8": 3,
@@ -102,21 +98,21 @@ TRAIT_SCORE_WEIGHT = {
     "mage_7": 1.8,
     "mage_10": 4,
 
-    "portal_3": 0.4,
+    "portal_3": 0.1,
     "portal_6": 0.8,
     "portal_8": 1.8,
     "portal_10": 4,
 
-    "vanguard_2": 0.5,
+    "vanguard_2": 0.2,
     "vanguard_4": 1.2,
     "vanguard_6": 2.5,
 
-    "bastion_2": 0.5,
+    "bastion_2": 0.2,
     "bastion_4": 0.2,
     "bastion_6": 1.8,
     "bastion_8": 3.5,
 
-    "preserver_2": 0.5,
+    "preserver_2": 0.2,
     "preserver_3": 0.7,
     "preserver_4": 1.2,
     "preserver_5": 2,
@@ -135,6 +131,7 @@ MIN_SCORE = 0.0
 
 MIN_TRAIT_LEVEL = 2
 
+# range [-1, 1]
 UNIT_SCORE = {
     "Diana": 1,
     "Milio": 1,
@@ -197,3 +194,10 @@ UNIT_SCORE = {
     "Twitch": -0.3,
     "Warwick": -0.3,
 }
+
+
+# [-1, 1]
+SINERGIES = [
+    ("pyro", "multistriker", 1)
+]
+

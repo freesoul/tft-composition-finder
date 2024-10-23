@@ -1,7 +1,8 @@
 import time
 import random
 
-from typing import Set, Dict, List, Generator
+from copy import deepcopy
+from typing import Set, Dict, List, Generator, Union
 
 from tft_composition_finder.schemas.emblems import Emblems
 from tft_composition_finder.schemas.composition import Composition
@@ -21,13 +22,15 @@ class BaseComposer:
         self,
         target_team_size: int = 7,
         emblems: List[Emblems] = [],
-        required_champs: List[Champion] = INCLUDE_CHAMPS,
+        required_champs: List[str] = INCLUDE_CHAMPS,
         fuzzy: int = 0,
         max_cost: int = 5,
     ) -> None:
         self._target_team_size = target_team_size
         self._emblems = emblems
-        self._emblems_dict: Dict[str, int] = {emblem.name: emblem.num for emblem in emblems}
+        self._emblems_dict: Dict[str, int] = {
+            emblem.name: emblem.num for emblem in emblems
+        }
         self._found_compositions: List[Composition] = []
         self._found_composition_keys: Set[str] = set()
         self._max_cost = max_cost
@@ -46,9 +49,12 @@ class BaseComposer:
                 continue
             if champ.name in EXCLUDE_CHAMPS:
                 continue
+            if champ.cost is None or not isinstance(champ.cost, (int, float)):
+                raise ValueError(
+                    f"Champion {champ.name} in searchable champs has invalid cost: {champ.cost}"
+                )
             champs.append(champ)
         return champs
-        
 
     def _has_required_champs(self, composition: Composition) -> bool:
         if self._num_required_champs == 0:
@@ -89,7 +95,9 @@ class BaseComposer:
 
     def _pick_missing_required_champs(self, composition: Composition) -> List[Champion]:
         missing_champs = []
-        for req_champ in random.sample(self._required_champs, k=self._num_required_champs):
+        for req_champ in random.sample(
+            self._required_champs, k=self._num_required_champs
+        ):
             if isinstance(req_champ, str):
                 if req_champ not in composition.key:
                     missing_champs.append(self._get_champ(req_champ))
@@ -99,10 +107,38 @@ class BaseComposer:
                         missing_champs.append(self._get_champ(champ_name))
         return missing_champs
 
-    def _get_next_sampleable_champs(self, composition: Composition) -> List[Champion]:
+    def _get_next_sampleable_champs(
+        self, composition: Composition
+    ) -> List[Champion]:
         if not self._has_required_champs(composition):
             search_champs = self._pick_missing_required_champs(composition)
         else:
             search_champs = self._searchable_champs
-        random.shuffle(search_champs)
         return search_champs
+
+    def _generate_possible_champs(
+        self, composition: Composition
+    ) -> Generator[Champion, None, None]:
+        if not self._has_required_champs(composition):
+            for champ in self._pick_missing_required_champs(composition):
+                yield champ
+
+        copy_champs = deepcopy(self._searchable_champs)
+
+        random.shuffle(copy_champs)
+
+        for champ in copy_champs:
+            if champ.name not in composition.key:
+                yield champ
+
+    def _get_random_composition(self) -> Composition:
+        champs: Set[Champion] = set()
+        i = 0
+        for champ in self._generate_possible_champs(Composition(set(), self._emblems_dict)):
+            champs.add(champ)
+            i += 1
+            if i >= self._target_team_size:
+                break
+
+        composition = Composition(champions=champs, emblems=self._emblems_dict)
+        return composition
