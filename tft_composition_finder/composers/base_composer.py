@@ -2,7 +2,7 @@ import time
 import random
 
 from copy import deepcopy
-from typing import Set, Dict, List, Generator, Union
+from typing import Set, Dict, List, Generator, Optional
 
 from tft_composition_finder.schemas.emblems import Emblems
 from tft_composition_finder.schemas.composition import Composition
@@ -28,14 +28,13 @@ class BaseComposer:
     ) -> None:
         self._target_team_size = target_team_size
         self._emblems = emblems
-        self._emblems_dict: Dict[str, int] = {
-            emblem.name: emblem.num for emblem in emblems
-        }
+        self._emblems_dict: Dict[str, int] = {emblem.name: emblem.num for emblem in emblems}
         self._found_compositions: List[Composition] = []
         self._found_composition_keys: Set[str] = set()
         self._max_cost = max_cost
-        self._required_champs = required_champs
+        self._required_champ_names = required_champs
         self._searchable_champs = self._get_searchable_champs()
+        self._required_champ_objs = [self._get_champ(name) for name in required_champs]
         self._fuzzy = fuzzy
         self._num_required_champs = len(required_champs) - fuzzy
 
@@ -50,9 +49,7 @@ class BaseComposer:
             if champ.name in EXCLUDE_CHAMPS:
                 continue
             if champ.cost is None or not isinstance(champ.cost, (int, float)):
-                raise ValueError(
-                    f"Champion {champ.name} in searchable champs has invalid cost: {champ.cost}"
-                )
+                raise ValueError(f"Champion {champ.name} in searchable champs has invalid cost: {champ.cost}")
             champs.append(champ)
         return champs
 
@@ -60,7 +57,7 @@ class BaseComposer:
         if self._num_required_champs == 0:
             return True
         count = 0
-        for req_champ in self._required_champs:
+        for req_champ in self._required_champ_names:
             if isinstance(req_champ, str):
                 if req_champ in composition.key:
                     count += 1
@@ -97,9 +94,7 @@ class BaseComposer:
 
     def _pick_missing_required_champs(self, composition: Composition) -> List[Champion]:
         missing_champs = []
-        for req_champ in random.sample(
-            self._required_champs, k=self._num_required_champs
-        ):
+        for req_champ in random.sample(self._required_champ_names, k=self._num_required_champs):
             if isinstance(req_champ, str):
                 if req_champ not in composition.key:
                     missing_champs.append(self._get_champ(req_champ))
@@ -109,18 +104,14 @@ class BaseComposer:
                         missing_champs.append(self._get_champ(champ_name))
         return missing_champs
 
-    def _get_next_sampleable_champs(
-        self, composition: Composition
-    ) -> List[Champion]:
+    def _get_next_sampleable_champs(self, composition: Composition) -> List[Champion]:
         if not self._has_required_champs(composition):
             search_champs = self._pick_missing_required_champs(composition)
         else:
             search_champs = self._searchable_champs
         return search_champs
 
-    def _generate_possible_champs(
-        self, composition: Composition
-    ) -> Generator[Champion, None, None]:
+    def _generate_possible_champs(self, composition: Composition) -> Generator[Champion, None, None]:
         if not self._has_required_champs(composition):
             for champ in self._pick_missing_required_champs(composition):
                 yield champ
@@ -144,3 +135,33 @@ class BaseComposer:
 
         composition = Composition(champions=champs, emblems=self._emblems_dict)
         return composition
+
+    def _fix_composition(self, champs: Set[Champion], fill_from: Optional[Set[Champion]] = None) -> set:
+        """
+        Adds required champions, adds missing champions, and removes excess champions
+        """
+        # Add required champions
+        champs.update(self._required_champ_objs)
+
+        # Remove excess champions
+        while len(champs) > self._target_team_size:
+            non_required_champs = champs - set(self._required_champ_objs)
+            if non_required_champs:
+                champ_to_remove = random.choice(list(non_required_champs))
+                champs.remove(champ_to_remove)
+            else:
+                raise ValueError("No non-required champions to remove, but composition is too large")
+
+        # Add missing champions
+        if not fill_from:
+            while len(champs) < self._target_team_size:
+                champs.add(next(self._generate_possible_champs(Composition(champs, self._emblems_dict))))
+        else:
+            remaining_champs = fill_from - champs
+            while len(champs) < self._target_team_size:
+                if not remaining_champs:
+                    raise ValueError("No more champions to add, but composition is too small")
+                champs.add(random.choice(list(remaining_champs)))
+                remaining_champs = fill_from - champs
+
+        return champs

@@ -1,6 +1,6 @@
-from copy import deepcopy
-from typing import List, Optional, Generator, Tuple
+from typing import List, Generator, Tuple
 import random
+import bisect
 
 from tft_composition_finder.schemas.emblems import Emblems
 from tft_composition_finder.schemas.composition import Composition
@@ -20,10 +20,10 @@ class GeneticComposer(BaseComposer):
         required_champs: List[str] = INCLUDE_CHAMPS,  # List of champion names
         fuzzy: int = 0,
         max_cost: int = 5,
-        population_size: int = 800,
-        generations: int = 200,
+        population_size: int = 1000,
+        generations: int = 300,
         mutation_rate: float = 0.1,
-        crossover_rate: float = 0.7,
+        crossover_rate: float = 0.8,
     ) -> None:
         super().__init__(target_team_size, emblems, required_champs, fuzzy, max_cost)
         self._population_size = population_size
@@ -52,19 +52,14 @@ class GeneticComposer(BaseComposer):
     def _initialize_population(self) -> List[Composition]:
         population = []
         attempts = 0
-        while (
-            len(population) < self._population_size
-            and attempts < self._population_size * 10
-        ):
+        while len(population) < self._population_size and attempts < self._population_size * 10:
             comp = self._get_random_composition()
             if comp.key not in [c.key for c in population]:
                 population.append(comp)
             attempts += 1
         return population
 
-    def _selection(
-        self, population: List[Composition], fitness_scores: List[float]
-    ) -> List[Composition]:
+    def _selection(self, population: List[Composition], fitness_scores: List[float]) -> List[Composition]:
         selected = []
         for _ in range(len(population)):
             # Tournament selection
@@ -85,69 +80,45 @@ class GeneticComposer(BaseComposer):
                 offspring.extend([parent1, parent2])
         return offspring
 
-    def _crossover_parents(
-        self, parent1: Composition, parent2: Composition
-    ) -> Tuple[Composition, Composition]:
-        parent1_champs = list(parent1.champions)
-        parent2_champs = list(parent2.champions)
-        crossover_point = random.randint(1, self._target_team_size - 1)
+    def _crossover_parents(self, parent1: Composition, parent2: Composition) -> Tuple[Composition, Composition]:
+        """
+        We will use a weighted random choices from each parent to favoritize most common traits of each champ
+        """
+        # we need lists to keep order (sets are unordered)
+        parent1_champions = list(parent1.champions)
+        parent2_champions = list(parent2.champions)
 
-        child1_champs = parent1_champs[:crossover_point]
-        child2_champs = parent2_champs[:crossover_point]
+        # Get most common traits
+        both_parent_champs = set(parent1_champions + parent2_champions)
+        trait_counts = {}
+        for champ in both_parent_champs:
+            for trait in champ.traits:
+                if trait not in trait_counts:
+                    trait_counts[trait] = 0
+                trait_counts[trait] += 1
 
-        # Add unique champions from the other parent
-        for champ in parent2_champs:
-            if (
-                champ not in child1_champs
-                and len(child1_champs) < self._target_team_size
-            ):
-                child1_champs.append(champ)
-        for champ in parent1_champs:
-            if (
-                champ not in child2_champs
-                and len(child2_champs) < self._target_team_size
-            ):
-                child2_champs.append(champ)
+        # Determine weights for each parent
+        parent_1_weights = []
+        for champ in parent1_champions:
+            parent_1_weights.append(sum([trait_counts[trait] for trait in champ.traits]))
 
-        # Ensure required champions are included
-        required_champions = set(
-            self._get_champ(name) for name in self._required_champs
-        )
-        child1_champs = set(child1_champs).union(required_champions)
-        child2_champs = set(child2_champs).union(required_champions)
+        # Pick from parent 2
+        parent_2_weights = []
+        for champ in parent2_champions:
+            parent_2_weights.append(sum([trait_counts[trait] for trait in champ.traits]))
 
-        # Fix compositions to ensure correct team size and uniqueness
-        child1_champs = self._fix_champions(child1_champs)
-        child2_champs = self._fix_champions(child2_champs)
+        # Create a couple of children
+        children = []
+        for _ in range(2):
+            parent_1_chosen_champs = self.weighted_sample_without_replacement(parent1_champions, weights=parent_1_weights, k=self._target_team_size // 2)
+            parent_2_chosen_champs = self.weighted_sample_without_replacement(parent2_champions, weights=parent_2_weights, k=self._target_team_size // 2)
 
-        child1 = Composition(champions=child1_champs, emblems=self._emblems_dict)
-        child2 = Composition(champions=child2_champs, emblems=self._emblems_dict)
-        return child1, child2
+            # Create a child
+            child_champs = set(parent_1_chosen_champs + parent_2_chosen_champs)
+            child_champs = self._fix_composition(child_champs, fill_from=both_parent_champs)
+            children.append(Composition(champions=child_champs, emblems=self._emblems_dict))
 
-    def _fix_champions(self, champs: set) -> set:
-        champs = set(champs)
-        required_champions = set(
-            self._get_champ(name) for name in self._required_champs
-        )
-        champs.update(required_champions)
-        # Remove excess champions
-        while len(champs) > self._target_team_size:
-            non_required_champs = champs - required_champions
-            if non_required_champs:
-                champ_to_remove = random.choice(list(non_required_champs))
-                champs.remove(champ_to_remove)
-            else:
-                break  # Cannot remove required champions
-        # Add missing champions
-        while len(champs) < self._target_team_size:
-            champs.add(
-                next(
-                    self._generate_possible_champs(
-                        Composition(champs, self._emblems_dict)
-                    )
-                )
-            )
-        return champs
+        return children[0], children[1]
 
     def _mutation(self, offspring: List[Composition]) -> List[Composition]:
         for comp in offspring:
@@ -156,12 +127,7 @@ class GeneticComposer(BaseComposer):
         return offspring
 
     def _mutate_composition(self, composition: Composition) -> None:
-        required_champions = set(
-            self._get_champ(name) for name in self._required_champs
-        )
-        non_required_champs = [
-            c for c in composition.champions if c not in required_champions
-        ]
+        non_required_champs = [c for c in composition.champions if c not in self._required_champ_objs]
         if not non_required_champs:
             return
         champ_to_replace = random.choice(list(non_required_champs))
@@ -171,3 +137,24 @@ class GeneticComposer(BaseComposer):
         new_champ = random.choice(list(available_champs))
         composition.champions.remove(champ_to_replace)
         composition.champions.add(new_champ)
+
+    @staticmethod
+    def weighted_sample_without_replacement(population, weights, k):
+        assert len(population) == len(weights)
+        cum_weights = list(weights)
+        for i in range(1, len(cum_weights)):
+            cum_weights[i] += cum_weights[i - 1]
+        total = cum_weights[-1]
+        selected = []
+        for _ in range(k):
+            r = random.uniform(0, total)
+            i = bisect.bisect_right(cum_weights, r)
+            if i >= len(population):  # Ensure index is within range
+                i = len(population) - 1
+            if not population:  # Check if population is empty
+                break
+            selected.append(population.pop(i))
+            weight = weights.pop(i)
+            total -= weight
+            cum_weights = [w - weight for w in cum_weights[:i]] + [w - weight for w in cum_weights[i:]]
+        return selected

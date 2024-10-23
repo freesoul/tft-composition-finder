@@ -28,8 +28,8 @@ TRAIT_SCORE_WEIGHT = {
 
     "faerie_3": 0.5,
     "faerie_5": 2,
-    "faerie_7": 3,
-    "faerie_9": 4,
+    "faerie_7": 10,
+    "faerie_9": 6,
 
     "eldritch_3": 0.1,
     "eldritch_5": 0.5,
