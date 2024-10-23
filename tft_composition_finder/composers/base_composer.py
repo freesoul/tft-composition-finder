@@ -79,6 +79,8 @@ class BaseComposer:
 
     def _maybe_keep_composition(self, composition: Composition) -> bool:
         kept = False
+        if composition.key in self._found_composition_keys:
+            return False
         score = composition.score  # calculate once
         if score > 0.0:
             if len(self._found_compositions) < KEEP_N_BEST:

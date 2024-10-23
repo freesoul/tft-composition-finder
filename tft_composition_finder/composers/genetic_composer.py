@@ -20,10 +20,10 @@ class GeneticComposer(BaseComposer):
         required_champs: List[str] = INCLUDE_CHAMPS,  # List of champion names
         fuzzy: int = 0,
         max_cost: int = 5,
-        population_size: int = 500,
+        population_size: int = 800,
         generations: int = 200,
         mutation_rate: float = 0.1,
-        crossover_rate: float = 0.8,
+        crossover_rate: float = 0.7,
     ) -> None:
         super().__init__(target_team_size, emblems, required_champs, fuzzy, max_cost)
         self._population_size = population_size

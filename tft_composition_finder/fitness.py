@@ -39,12 +39,11 @@ def _get_traits_score(composition: Composition) -> float:
 
 
 def _get_units_score(composition: Composition) -> float:
-    UNITS_SCORE_WEIGHT = 0.5
     score = 0.0
     for champ in composition.champions:
         if champ.name in UNIT_SCORE:
             score += UNIT_SCORE[champ.name]
-    return score * UNITS_SCORE_WEIGHT
+    return score 
 
 
 def _has_required_num_traits(composition: Composition) -> bool:
@@ -98,7 +97,7 @@ def fitness(
 
     score = (
         _get_traits_score(composition)
-        + (_get_units_score(composition) * 0.1)
+        + _get_units_score(composition)
         + _get_synergies_score(composition)
     )
 
@@ -107,4 +106,4 @@ def fitness(
     if score < MIN_SCORE:
         return 0.0
 
-    return score
+    return round(score, 2)
